@@ -1,1 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AKAI Distributors – Labels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f4f6;--panel:#fff;--ink:#14171a;--muted:#646d76;--line:#dde2e7;--soft:#f6f7f9;--accent:#d7261e;--accent-dk:#b51e17}
+*{box-sizing:border-box;min-width:0}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,Arial,sans-serif}
 
+/* top bar */
+.top{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top-in{max-width:1400px;margin:0 auto;padding:14px max(3vw,16px);display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{width:42px;height:42px;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:700;font-size:18px;letter-spacing:.5px;flex:none}
+.brand{line-height:1.15}
+.brand b{display:block;font-size:20px;font-weight:700}
+.brand span{font-size:13px;color:var(--muted)}
+.top .sum{margin-left:auto;font-size:14px;color:var(--muted);font-weight:500}
+.top .btn.primary{width:auto;padding:0 22px}
+
+/* layout */
+.wrap{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:minmax(0,380px) minmax(0,1fr);gap:24px;padding:24px max(3vw,16px) 48px;align-items:start}
+.side{display:grid;gap:16px;position:sticky;top:94px;max-height:calc(100vh - 110px);overflow:auto;padding-bottom:4px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+h2{font-size:15px;font-weight:600;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center}
+h2 small{font-weight:500;color:var(--muted);font-size:13px}
+
+/* entries */
+.entry{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:12px;background:var(--soft)}
+.entry-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.entry-h span{font-size:13px;font-weight:600;color:var(--muted)}
+.del{border:0;background:none;color:var(--muted);font:inherit;font-size:13px;font-weight:500;padding:6px 8px;border-radius:6px;cursor:pointer;min-height:32px}
+.del:hover{color:var(--accent);background:#fdeceb}
+textarea,select,input[type=number]{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+textarea{min-height:120px;resize:vertical;line-height:1.45}
+textarea::placeholder{color:#9aa2aa}
+:is(textarea,select,input,button):focus-visible{outline:3px solid rgba(215,38,30,.35);outline-offset:1px;border-color:var(--accent)}
+.lbl{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 6px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.seg button{min-height:40px;min-width:48px;padding:0 12px;border:1px solid var(--line);background:#fff;border-radius:8px;font:inherit;font-size:15px;font-weight:500;cursor:pointer;color:var(--ink)}
+.seg button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.seg input{width:90px;min-height:40px;padding:8px 10px}
+
+.btn{min-height:44px;padding:0 16px;border-radius:10px;border:1px solid var(--line);background:#fff;font:inherit;font-weight:600;font-size:15px;cursor:pointer;color:var(--ink);width:100%}
+.btn:hover{border-color:#b9c1c9}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.primary:hover{background:var(--accent-dk)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.note{font-size:13px;color:var(--muted);margin:10px 0 0;line-height:1.45}
+
+/* preview */
+.preview{display:grid;gap:6px;justify-items:center}
+.pg{font-size:13px;color:var(--muted);font-weight:500;width:100%;max-width:794px;display:flex;justify-content:space-between}
+.pg:not(:first-child){margin-top:18px}
+.sheet{width:210mm;height:297mm;background:#fff;position:relative;box-shadow:0 1px 3px rgba(0,0,0,.08),0 10px 30px rgba(0,0,0,.08);transform-origin:top left;overflow:hidden}
+.lab{position:absolute;width:99.1mm;height:33.9mm;padding:2.5mm 4mm;display:flex;flex-direction:column;justify-content:center;overflow:hidden;color:#000;font-family:Arial,Helvetica,sans-serif;line-height:1.18;outline:.2mm dashed #c4cad0;outline-offset:-.1mm}
+.lab.c{align-items:center;text-align:center}
+.lab.r{align-items:flex-end;text-align:right}
+.lab .nm{font-weight:700}
+.lab .ad{white-space:pre-line}
+.lab .nm,.lab .ad{max-width:100%;overflow-wrap:anywhere}
+
+@media(max-width:880px){.wrap{grid-template-columns:minmax(0,1fr)}.side{position:static;max-height:none}.top .sum{display:none}}
+
+@media print{
+  @page{size:A4 portrait;margin:0}
+  body{background:#fff}
+  .top,.side,.pg{display:none!important}
+  .wrap{display:block;padding:0;max-width:none}
+  .preview{display:block}
+  .sheetbox{width:auto!important;height:auto!important}
+  .sheet{transform:none!important;box-shadow:none;height:296.5mm;break-after:page;page-break-after:always}
+  .sheetbox:last-child .sheet{break-after:auto;page-break-after:auto}
+  .lab{outline:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="logo" aria-hidden="true">AK</div>
+    <div class="brand"><b>AKAI Distributors</b><span>Address label printer · A4 · 16 labels (99.1 × 33.9 mm)</span></div>
+    <span class="sum" id="sum"></span>
+    <div><button class="btn primary" id="print2" type="button">Print</button></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="side">
+    <section class="panel">
+      <h2>Addresses <small id="count"></small></h2>
+      <div id="entries"></div>
+      <button class="btn" id="add" type="button">+ Add another address</button>
+      <p class="note">Write the name on the first line (it prints in bold), then the address below. If no copies are picked, the address fills the whole page (16).</p>
+    </section>
+
+    <section class="panel">
+      <h2>Text</h2>
+      <div class="row">
+        <div><label class="lbl" for="al" style="margin-top:0">Alignment</label>
+          <select id="al"><option value="c">Centre</option><option value="l">Left</option><option value="r">Right</option></select></div>
+        <div><label class="lbl" for="fs" style="margin-top:0">Max size</label>
+          <select id="fs"><option value="10">10 pt</option><option value="11">11 pt</option><option value="12" selected>12 pt</option><option value="13">13 pt</option><option value="14">14 pt</option><option value="16">16 pt</option></select></div>
+      </div>
+      <p class="note">Long addresses shrink automatically to fit a label.</p>
+    </section>
+
+    <section class="panel">
+      <button class="btn primary" id="print" type="button">Print labels</button>
+      <p class="note">In the print window choose Paper: A4, Margins: None, Scale: 100%, and turn off headers and footers. Dotted lines show on screen only; they never print.</p>
+    </section>
+  </aside>
+
+  <main class="preview" id="preview" aria-label="Print preview"></main>
+</div>
+
+<script>
+{
+const PER=16,LEFT=4.65,TOP=12.9,PITCHX=101.6,PITCHY=33.9;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let entries=[{text:'Riya Sharma\nFlat 12B, Green Park Apartments\nMG Road, Andheri East\nMumbai, Maharashtra 400069\nPh: 98200 00000',copies:16}];
+let settings={al:'c',fs:12};
+try{
+  const s=JSON.parse(localStorage.getItem('akaiLabels')||'null');
+  if(s&&Array.isArray(s.entries)&&s.entries.length){entries=s.entries.map(e=>({text:e.text||'',copies:e.copies||16}));Object.assign(settings,s.settings||{});}
+}catch(e){}
+const save=()=>{try{localStorage.setItem('akaiLabels',JSON.stringify({entries,settings}))}catch(e){}};
+
+function entryHTML(e,i){
+  const preset=[4,8,16].includes(e.copies);
+  return `<div class="entry" data-i="${i}">
+    <div class="entry-h"><span>Address ${i+1}</span>${entries.length>1?`<button class="del" type="button" data-act="del">Remove</button>`:''}</div>
+    <textarea id="t${i}" aria-label="Name and address ${i+1}" placeholder="Name&#10;House / street&#10;Area, City&#10;State, PIN&#10;Phone">${esc(e.text)}</textarea>
+    <span class="lbl">Copies</span>
+    <div class="seg">
+      ${[4,8,16].map(n=>`<button type="button" data-act="copies" data-n="${n}" aria-pressed="${preset&&e.copies===n}">${n}</button>`).join('')}
+      <input type="number" min="1" max="999" aria-label="Custom copies" placeholder="Other" value="${preset?'':e.copies}">
+    </div>
+  </div>`;
+}
+function drawEntries(){$('entries').innerHTML=entries.map(entryHTML).join('');}
+
+$('entries').addEventListener('input',ev=>{
+  const t=ev.target,box=t.closest('.entry');if(!box)return;
+  const e=entries[+box.dataset.i];
+  if(t.tagName==='TEXTAREA')e.text=t.value;
+  else if(t.type==='number'){
+    const n=parseInt(t.value,10);e.copies=n>0?Math.min(n,999):16;
+    box.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',String(!t.value&&+b.dataset.n===16)));
+  }
+  render();
+});
+$('entries').addEventListener('click',ev=>{
+  const b=ev.target.closest('button');if(!b)return;
+  const box=b.closest('.entry'),i=+box.dataset.i;
+  if(b.dataset.act==='copies'){
+    entries[i].copies=+b.dataset.n;
+    box.querySelectorAll('.seg button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    box.querySelector('input[type=number]').value='';render();
+  }else if(b.dataset.act==='del'){entries.splice(i,1);drawEntries();render();}
+});
+$('add').addEventListener('click',()=>{
+  entries.push({text:'',copies:16});drawEntries();render();
+  const t=$('t'+(entries.length-1));if(t)t.focus();
+});
+
+$('al').value=settings.al;$('fs').value=String(settings.fs);
+$('al').addEventListener('change',()=>{settings.al=$('al').value;render();});
+$('fs').addEventListener('change',()=>{settings.fs=+$('fs').value||12;render();});
+
+const pos=s=>`left:${(LEFT+(s%2)*PITCHX).toFixed(2)}mm;top:${(TOP+Math.floor(s/2)*PITCHY).toFixed(2)}mm`;
+function labHTML(it,s){
+  if(!it)return `<div class="lab" style="${pos(s)}"></div>`;
+  const lines=it.text.replace(/\r/g,'').split('\n');
+  while(lines.length&&!lines[0].trim())lines.shift();
+  const name=(lines.shift()||'').trim(),rest=lines.join('\n').trim();
+  const cls=settings.al==='c'?'c':settings.al==='r'?'r':'';
+  return `<div class="lab ${cls}" data-e="${it.i}" style="${pos(s)}">${name?`<div class="nm">${esc(name)}</div>`:''}${rest?`<div class="ad">${esc(rest)}</div>`:''}</div>`;
+}
+
+function fit(){
+  const done={};
+  document.querySelectorAll('.lab[data-e]').forEach(l=>{
+    const k=l.dataset.e;
+    if(done[k]){l.style.fontSize=done[k];return;}
+    let s=settings.fs;l.style.fontSize=s+'pt';
+    while(s>6&&(l.scrollHeight>l.clientHeight+1||l.scrollWidth>l.clientWidth+1)){s-=.5;l.style.fontSize=s+'pt';}
+    done[k]=s+'pt';
+  });
+}
+
+function scaleSheets(){
+  const px=210*96/25.4,py=297*96/25.4,sc=Math.min(1,$('preview').clientWidth/px);
+  document.querySelectorAll('.sheetbox').forEach(b=>{
+    b.style.width=px*sc+'px';b.style.height=py*sc+'px';
+    b.firstElementChild.style.transform=`scale(${sc})`;
+  });
+}
+
+let raf=0;
+function render(){cancelAnimationFrame(raf);raf=requestAnimationFrame(build);}
+function build(){
+  const list=[];
+  entries.forEach((e,i)=>{if(!e.text.trim())return;for(let c=0;c<(e.copies>0?e.copies:16);c++)list.push({text:e.text,i});});
+  const pages=Math.max(1,Math.ceil(list.length/PER));
+  let html='';
+  for(let p=0;p<pages;p++){
+    const used=Math.min(PER,Math.max(0,list.length-p*PER));
+    let labs='';for(let s=0;s<PER;s++)labs+=labHTML(list[p*PER+s],s);
+    html+=`<div class="pg"><span>Sheet ${p+1} of ${pages}</span><span>${used} of 16 labels</span></div><div class="sheetbox"><div class="sheet">${labs}</div></div>`;
+  }
+  $('preview').innerHTML=html;
+  scaleSheets();fit();
+  const n=list.length;
+  $('sum').textContent=n?`${n} label${n>1?'s':''} · ${pages} sheet${pages>1?'s':''}`:'No labels yet';
+  $('count').textContent=`${entries.length} added`;
+  $('print').disabled=$('print2').disabled=!n;
+  save();
+}
+
+const doPrint=()=>{try{window.print()}catch(e){}};
+$('print').addEventListener('click',doPrint);$('print2').addEventListener('click',doPrint);
+const ro=new ResizeObserver(scaleSheets);ro.observe($('preview'));
+
+drawEntries();render();
+}
+</script>
+</body>
+</html>
