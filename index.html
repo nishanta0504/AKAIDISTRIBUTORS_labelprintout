@@ -128,7 +128,7 @@ textarea{min-height:120px;resize:vertical;line-height:1.45}
     <section class="panel">
       <h2>Address book <small id="bookInfo"></small></h2>
       <button class="btn" id="refresh" type="button">Refresh from sheet</button>
-      <p class="note">Addresses come from the “labela” sheet. Edits there show up here after Refresh.</p>
+      <p class="note">Addresses come from the “labels” sheet. Edits there show up here after Refresh.</p>
     </section>
 
     <section class="panel">
@@ -215,7 +215,7 @@ function openList(box,q){
   list._res=res;list._act=res.length?0:-1;
   list.innerHTML=res.length
     ?res.map((r,k)=>`<div class="opt${k===0?' act':''}" role="option" data-k="${k}"><b>${hl(r.name,ql)}</b><span>${hl(r.addr.replace(/\n/g,', '),ql)}</span></div>`).join('')
-    :`<div class="empty">${BOOK.length?'No match. You can still type the address in the box below.':'No saved addresses yet. Add them to the “labela” sheet.'}</div>`;
+    :`<div class="empty">${BOOK.length?'No match. You can still type the address in the box below.':'No saved addresses yet. Add them to the “labels” sheet.'}</div>`;
   list.classList.add('open');
 }
 function closeLists(except){document.querySelectorAll('.list.open').forEach(l=>{if(l!==except)l.classList.remove('open')});}
