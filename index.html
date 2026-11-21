@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AKAI Distributors – Labels</title>
+<script>
+/* =====================================================================
+   GOOGLE SHEET LINK — paste the Apps Script web app link (ends in /exec)
+   between the quotes below. It is set here in the code only.
+   ===================================================================== */
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbyC7scwZ00OYMmlQkYnYgMMZCzdG_na3zkPm1U4qRk8DWmfz7qbje28MLfiUbFXnn9a/exec";
+/* ===================================================================== */
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -128,7 +136,7 @@ textarea{min-height:120px;resize:vertical;line-height:1.45}
     <section class="panel">
       <h2>Address book <small id="bookInfo"></small></h2>
       <button class="btn" id="refresh" type="button">Refresh from sheet</button>
-      <p class="note">Addresses come from the “labels” sheet. Edits there show up here after Refresh.</p>
+      <p class="note" id="bookMsg">Addresses come from the “Labels” sheet (column A, one empty cell between addresses).</p>
     </section>
 
     <section class="panel">
@@ -141,16 +149,8 @@ textarea{min-height:120px;resize:vertical;line-height:1.45}
 </div>
 
 <script>
-/* =====================================================================
-   PASTE YOUR GOOGLE SHEET WEB APP LINK BETWEEN THE QUOTES BELOW
-   (Apps Script > Deploy > Web app > copy the link ending in /exec)
-   ===================================================================== */
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbyC7scwZ00OYMmlQkYnYgMMZCzdG_na3zkPm1U4qRk8DWmfz7qbje28MLfiUbFXnn9a/exec";
-/* ===================================================================== */
-</script>
-<script>
 {
-/* ---------- address book from the "labela" sheet ---------- */
+/* ---------- address book from the "Labels" sheet ---------- */
 let BOOK=[];
 function setBook(rows){
   BOOK=(rows||[]).map(r=>{const name=String(r[0]||''),addr=String(r[1]||'');
@@ -215,7 +215,7 @@ function openList(box,q){
   list._res=res;list._act=res.length?0:-1;
   list.innerHTML=res.length
     ?res.map((r,k)=>`<div class="opt${k===0?' act':''}" role="option" data-k="${k}"><b>${hl(r.name,ql)}</b><span>${hl(r.addr.replace(/\n/g,', '),ql)}</span></div>`).join('')
-    :`<div class="empty">${BOOK.length?'No match. You can still type the address in the box below.':'No saved addresses yet. Add them to the “labels” sheet.'}</div>`;
+    :`<div class="empty">${BOOK.length?'No match. You can still type the address in the box below.':'No saved addresses yet. Add them to the “Labels” sheet.'}</div>`;
   list.classList.add('open');
 }
 function closeLists(except){document.querySelectorAll('.list.open').forEach(l=>{if(l!==except)l.classList.remove('open')});}
@@ -292,19 +292,26 @@ $('fs').addEventListener('change',()=>{settings.fs=+$('fs').value||12;render();}
 function refreshBook(force){
   const btn=$('refresh');
   if(!/^https:\/\/script\.google(usercontent)?\.com\//.test(SHEET_URL)){
-    $('bookInfo').textContent='Not linked';
-    btn.textContent='Sheet link not added yet';btn.disabled=true;return;
+    $('bookInfo').textContent='Not connected';
+    btn.disabled=true;
+    $('bookMsg').textContent='Saved addresses are not available right now. You can still type addresses directly.';return;
   }
   btn.disabled=true;btn.textContent='Refreshing…';
   fetch(SHEET_URL+(force?(SHEET_URL.includes('?')?'&':'?')+'refresh=1':''))
-    .then(r=>r.json())
-    .then(d=>{
-      if(!d||!d.ok)throw new Error(d&&d.error||'error');
+    .then(r=>r.text())
+    .then(t=>{
+      let d;
+      try{d=JSON.parse(t);}catch(e){throw new Error('Could not load saved addresses. Please try again.');}
+      if(!d||!d.ok)throw new Error(d&&d.error||'Unknown error from the sheet.');
       setBook(d.labels);
       try{localStorage.setItem('akaiBook',JSON.stringify(d.labels));}catch(e){}
+      $('bookMsg').textContent='Loaded '+d.labels.length+' addresses from the “Labels” sheet.';
       btn.disabled=false;btn.textContent='Refresh from sheet';
     })
-    .catch(()=>{btn.disabled=false;btn.textContent='Could not load – try again';});
+    .catch(err=>{
+      $('bookMsg').textContent=(err&&err.message&&err.message!=='Failed to fetch')?err.message:'Could not load saved addresses. Check your internet and try again.';
+      btn.disabled=false;btn.textContent='Try again';
+    });
 }
 $('refresh').addEventListener('click',()=>refreshBook(true));
 refreshBook(false);
